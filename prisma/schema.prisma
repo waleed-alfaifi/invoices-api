@@ -1,0 +1,82 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id String @id @default(uuid())
+  username String @unique @db.VarChar(255)
+  password String @db.VarChar(255)
+  invoices Invoice[]
+  address Address[]
+}
+
+model Invoice {
+  id String @id @default(uuid())
+  description String @db.VarChar(255)
+  date DateTime @db.Timestamp
+  payment_terms PaymentTerms @default(terms_7)
+  status InvoiceStatus @default(Draft)
+  isDeleted Boolean @default(false)
+
+  // Foreign keys
+  userId String // Invoice owner
+  clientId String // Invoice receiver
+  sending_address String @map("sendingAddress")
+
+  // Relation fields
+  user User @relation(fields: [userId], references: [id])
+  address Address @relation(fields: [sending_address], references: [id])
+  client Client @relation(fields: [clientId], references: [id])
+  items Item[] // 0 or more
+}
+
+model Client {
+  id String @id @default(uuid())
+  name String @db.VarChar(255)
+  email String @db.VarChar(100)
+  addressId String @unique
+
+  address Address @relation(fields: [addressId], references: [id])
+  invoices Invoice[]
+}
+
+model Address {
+  id String @id @default(uuid())
+  street String @db.VarChar(100)
+  city String @db.VarChar(50)
+  post_code String @db.VarChar(50)
+  country String @db.VarChar(100)
+  userId String?
+
+  client Client?
+  invoices Invoice[]
+  user User? @relation(fields: [userId], references: [id])
+}
+
+model Item {
+  id Int @id @default(autoincrement())
+  name String @db.VarChar(255)
+  quantity Int
+  price Int
+
+  invoiceId String
+  invoice Invoice @relation(fields: [invoiceId], references: [id])
+}
+
+enum InvoiceStatus {
+  Draft
+  Pending
+  Paid
+}
+
+enum PaymentTerms {
+  terms_1
+  terms_7
+  terms_14
+  terms_30
+}
