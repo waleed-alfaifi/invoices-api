@@ -32,6 +32,7 @@ jobs:
       - checkout
       - run: echo "Your pipeline id is << pipeline.id >>"
       - run: echo "Your github project url is << pipeline.project.git_url >>"
+      - run: echo Your name is "$MY_NAME"
 
 # Orchestrate jobs using workflows
 # See: https://circleci.com/docs/configuration-reference/#workflows
