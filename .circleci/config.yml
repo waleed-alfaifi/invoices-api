@@ -41,7 +41,7 @@ jobs:
       - run: pwd | cat
       - run: cat output.txt
       - persist_to_workspace:
-          root: "~"
+          root: "~/project"
           paths:
             - "output.txt"
   print_hello_world_output:
@@ -50,18 +50,18 @@ jobs:
     steps:
       - checkout
       - attach_workspace:
-          at: "/"
-      - run: echo output.txt
+          at: "~"
+      - run: echo project/output.txt
 
 # Orchestrate jobs using workflows
 # See: https://circleci.com/docs/configuration-reference/#workflows
 workflows:
-  say-hello-workflow:
-    jobs:
-      - say-hello
-      - print-world:
-          requires:
-            - "say-hello"
+  # say-hello-workflow:
+  #   jobs:
+  #     - say-hello
+  #     - print-world:
+  #         requires:
+  #           - "say-hello"
   circle-ci-parameters:
     jobs:
       - print_parameters
