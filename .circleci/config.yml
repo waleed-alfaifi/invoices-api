@@ -37,12 +37,12 @@ jobs:
       - image: cimg/base:stable
     steps:
       - checkout
-      - run: echo "Hello World!" > output.txt
+      - run: echo "Hello World!" > workspace/output.txt
       - run: pwd | cat
       - run: ls -a
       - run: cat output.txt
       - persist_to_workspace:
-          root: "~/project"
+          root: workspace
           paths:
             - "output.txt"
   print_hello_world_output:
@@ -51,10 +51,10 @@ jobs:
     steps:
       - checkout
       - attach_workspace:
-          at: "~"
+          at: workspace
       - run: pwd | cat
-      - run: ls
-      - run: echo project/output.txt
+      - run: ls -a
+      - run: cat workspace/output.txt
 
 # Orchestrate jobs using workflows
 # See: https://circleci.com/docs/configuration-reference/#workflows
