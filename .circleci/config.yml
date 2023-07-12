@@ -65,9 +65,9 @@ workflows:
       - print-world:
           requires:
             - "say-hello"
-  circle-ci-parameters:
-    jobs:
-      - print_parameters
+  # circle-ci-parameters:
+  #   jobs:
+  #     - print_parameters
   sharing_files:
     jobs:
       - save_hello_world_output
