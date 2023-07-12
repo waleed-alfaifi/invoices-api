@@ -71,4 +71,6 @@ workflows:
   sharing_files:
     jobs:
       - save_hello_world_output
-      - print_hello_world_output
+      - print_hello_world_output:
+          requires: 
+            - save_hello_world_output
