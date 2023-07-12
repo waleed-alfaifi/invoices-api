@@ -38,6 +38,7 @@ jobs:
     steps:
       - checkout
       - run: echo "Hello World!" > output.txt
+      - run: pwd | cat
       - run: cat output.txt
       - persist_to_workspace:
           root: "~"
