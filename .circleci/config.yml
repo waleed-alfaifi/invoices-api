@@ -39,6 +39,7 @@ jobs:
       - checkout
       - run: echo "Hello World!" > output.txt
       - run: pwd | cat
+      - run: ls -a
       - run: cat output.txt
       - persist_to_workspace:
           root: "~/project"
@@ -51,6 +52,7 @@ jobs:
       - checkout
       - attach_workspace:
           at: "~"
+      - run: pwd | cat
       - run: ls
       - run: echo project/output.txt
 
