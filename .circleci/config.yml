@@ -40,7 +40,7 @@ jobs:
       - run: echo "Hello World!" > output.txt
       - run: cat output.txt
       - persist_to_workspace:
-          root: /
+          root: "~"
           paths:
             - "output.txt"
   print_hello_world_output:
@@ -49,9 +49,8 @@ jobs:
     steps:
       - checkout
       - attach_workspace:
-          at: /
+          at: "/"
       - run: echo output.txt
-      - run: cat output.txt
 
 # Orchestrate jobs using workflows
 # See: https://circleci.com/docs/configuration-reference/#workflows
