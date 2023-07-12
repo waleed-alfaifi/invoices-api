@@ -28,7 +28,7 @@ jobs:
           at: workspace
       - run: pwd | cat
       - run: ls -a
-      - run: echo workspace/output.txt
+      - run: cat workspace/output.txt
 
 # Orchestrate jobs using workflows
 # See: https://circleci.com/docs/configuration-reference/#workflows
