@@ -5,44 +5,18 @@ version: 2.1
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/configuration-reference/#jobs
 jobs:
-  say-hello:
-    # Specify the execution environment. You can specify an image from Docker Hub or use one of our convenience images from CircleCI's Developer Hub.
-    # See: https://circleci.com/docs/configuration-reference/#executor-job
-    docker:
-      - image: cimg/base:stable
-    # Add steps to the job
-    # See: https://circleci.com/docs/configuration-reference/#steps
-    steps:
-      - checkout
-      - run:
-          name: "Say hello"
-          command: "echo Hello, World!"
-  print-world:
-    docker:
-      - image: cimg/base:stable
-    steps:
-      - checkout
-      - run:
-          name: "Welcome world"
-          command: echo "Welcome world!"
-  print_parameters:
-    docker:
-      - image: cimg/base:stable
-    steps:
-      - checkout
-      - run: echo "Your pipeline id is << pipeline.id >>"
-      - run: echo "Your github project url is << pipeline.project.git_url >>"
   save_hello_world_output:
     docker:
       - image: cimg/base:stable
     steps:
       - checkout
-      - run: echo "Hello World!" > output.txt
+      - run: mkdir workspace
+      - run: echo "Hello World!" > workspace/output.txt
       - run: pwd | cat
       - run: ls -a
       - run: cat output.txt
       - persist_to_workspace:
-          root: "~/project"
+          root: workspace
           paths:
             - "output.txt"
   print_hello_world_output:
@@ -51,23 +25,14 @@ jobs:
     steps:
       - checkout
       - attach_workspace:
-          at: "~"
+          at: workspace
       - run: pwd | cat
-      - run: ls
-      - run: echo project/output.txt
+      - run: ls -a
+      - run: echo workspace/output.txt
 
 # Orchestrate jobs using workflows
 # See: https://circleci.com/docs/configuration-reference/#workflows
 workflows:
-  say-hello-workflow:
-    jobs:
-      - say-hello
-      - print-world:
-          requires:
-            - "say-hello"
-  circle-ci-parameters:
-    jobs:
-      - print_parameters
   sharing_files:
     jobs:
       - save_hello_world_output
