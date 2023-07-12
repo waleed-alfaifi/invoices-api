@@ -51,6 +51,7 @@ jobs:
       - checkout
       - attach_workspace:
           at: "~"
+      - run: ls
       - run: echo project/output.txt
 
 # Orchestrate jobs using workflows
