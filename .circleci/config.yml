@@ -2,40 +2,29 @@
 # See: https://circleci.com/docs/configuration-reference
 version: 2.1
 
+commands:
+  print_hello:
+    parameters:
+      person: 
+        type: string
+        default: World
+    steps:
+      - run: echo "Hello << parameters.person >>!"
+
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/configuration-reference/#jobs
 jobs:
-  save_hello_world_output:
+  reusable_commands:
     docker:
       - image: cimg/base:stable
     steps:
-      - checkout
-      - run: mkdir workspace
-      - run: echo "Hello World!" > workspace/output.txt
-      - run: pwd | cat
-      - run: ls -a
-      - run: cat workspace/output.txt
-      - persist_to_workspace:
-          root: workspace
-          paths:
-            - "output.txt"
-  print_hello_world_output:
-    docker:
-      - image: cimg/base:stable
-    steps:
-      - checkout
-      - attach_workspace:
-          at: workspace
-      - run: pwd | cat
-      - run: ls -a
-      - run: cat workspace/output.txt
+      - print_hello:
+          person: John
+    
 
 # Orchestrate jobs using workflows
 # See: https://circleci.com/docs/configuration-reference/#workflows
 workflows:
-  sharing_files:
+  reusing_code:
     jobs:
-      - save_hello_world_output
-      - print_hello_world_output:
-          requires:
-            - save_hello_world_output
+      - reusable_commands
