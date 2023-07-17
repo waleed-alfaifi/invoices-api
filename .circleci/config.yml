@@ -9,7 +9,7 @@ jobs:
     docker:
       - image: cimg/base:stable
     steps:
-      - run: exit 1
+      - run: exit 0
       - run:
           name: Print failure
           command: echo "This job failed"
