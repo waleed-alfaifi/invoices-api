@@ -2,29 +2,22 @@
 # See: https://circleci.com/docs/configuration-reference
 version: 2.1
 
-commands:
-  print_hello:
-    parameters:
-      person: 
-        type: string
-        default: World
-    steps:
-      - run: echo "Hello << parameters.person >>!"
-
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/configuration-reference/#jobs
 jobs:
-  reusable_commands:
+  failure_example:
     docker:
       - image: cimg/base:stable
     steps:
-      - print_hello:
-          person: John
-    
+      - run: exit 1
+      - run:
+          name: Print failure
+          command: echo "This job failed"
+          when: on_fail
 
 # Orchestrate jobs using workflows
 # See: https://circleci.com/docs/configuration-reference/#workflows
 workflows:
-  reusing_code:
+  failing_workflow:
     jobs:
-      - reusable_commands
+      - failure_example
