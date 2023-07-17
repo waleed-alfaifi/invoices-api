@@ -1,0 +1,18 @@
+# This config is equivalent to both the '.circleci/extended/orb-free.yml' and the base '.circleci/config.yml'
+version: 2.1
+
+jobs:
+  sample_job:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - run: echo Sample
+
+# Invoke jobs via workflows
+# See: https://circleci.com/docs/configuration-reference/#workflows
+workflows:
+  # This is the name of the workflow, feel free to change it to better match your workflow.
+  sample_workflow:
+    # Inside the workflow, you define the jobs you want to run.
+    jobs:
+      - sample_job
