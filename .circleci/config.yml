@@ -1,23 +1,18 @@
-# Use the latest 2.1 version of CircleCI pipeline process engine.
-# See: https://circleci.com/docs/configuration-reference
+# This config is equivalent to both the '.circleci/extended/orb-free.yml' and the base '.circleci/config.yml'
 version: 2.1
 
-# Define a job to be invoked later in a workflow.
-# See: https://circleci.com/docs/configuration-reference/#jobs
 jobs:
-  failure_example:
+  sample_job:
     docker:
-      - image: cimg/base:stable
+      - image: cimg/base:2022.3
     steps:
-      - run: exit 0
-      - run:
-          name: Print failure
-          command: echo "This job failed"
-          when: on_fail
+      - run: echo Sample
 
-# Orchestrate jobs using workflows
+# Invoke jobs via workflows
 # See: https://circleci.com/docs/configuration-reference/#workflows
 workflows:
-  failing_workflow:
+  # This is the name of the workflow, feel free to change it to better match your workflow.
+  sample_workflow: 
+    # Inside the workflow, you define the jobs you want to run.
     jobs:
-      - failure_example
+      - sample_job
